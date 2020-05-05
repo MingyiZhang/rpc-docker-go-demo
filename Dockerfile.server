@@ -1,0 +1,14 @@
+FROM golang:alpine AS builder
+
+WORKDIR /app
+COPY . .
+RUN go get ./...
+
+WORKDIR /app/server
+RUN go build .
+
+
+FROM golang:alpine
+COPY --from=builder /app/server/server /bin
+
+ENTRYPOINT ["server"]
