@@ -15,3 +15,7 @@ To stop everything:
 docker-compose down
 ```
 
+## TODO
+- [x] flag
+- [ ] Kubernetes
+ 
