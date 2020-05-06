@@ -1,17 +1,28 @@
 package main
 
 import (
+  "flag"
+  "fmt"
   "log"
   "net"
   "net/rpc"
   "net/rpc/jsonrpc"
 
-  rpc_demo "rpc-demo"
+  "rpc-demo/service"
 )
 
+var port = flag.Int("port", 0, "the port to listening on")
+
 func main() {
-  rpc.Register(rpc_demo.DemoService{})
-  listener, err := net.Listen("tcp", ":1234")
+  flag.Parse()
+  if *port == 0 {
+    log.Fatal("must specify a port")
+  }
+  err := rpc.Register(service.DemoService{})
+  if err != nil {
+    panic(err)
+  }
+  listener, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
   if err != nil {
     panic(err)
   }

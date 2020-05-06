@@ -1,17 +1,23 @@
 package main
 
 import (
+  "flag"
   "log"
   "net"
   "net/rpc/jsonrpc"
-  "os"
 
-  rpc_demo "rpc-demo"
+  "rpc-demo/service"
 )
 
+var host = flag.String("host", "", "the host to connect")
+
 func main() {
-  serverHost := os.Getenv("SERVER_HOST")
-  conn, err := net.Dial("tcp", serverHost)
+  flag.Parse()
+  if *host == "" {
+    log.Fatal("must specify host")
+  }
+
+  conn, err := net.Dial("tcp", *host)
   if err != nil {
     panic(err)
   }
@@ -20,7 +26,7 @@ func main() {
   var result float64
   err = client.Call(
     "DemoService.Div",
-    rpc_demo.Args{
+    service.Args{
       A: 10,
       B: 3,
     },
@@ -33,7 +39,7 @@ func main() {
 
   err = client.Call(
     "DemoService.Div",
-    rpc_demo.Args{
+    service.Args{
       A: 10,
       B: 0,
     },

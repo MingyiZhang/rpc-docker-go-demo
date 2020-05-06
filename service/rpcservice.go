@@ -1,11 +1,11 @@
-package rpc_demo
+package service
 
 import "errors"
 
 type DemoService struct {}
 
 type Args struct {
-  A, B int
+  A, B float64
 }
 
 func (DemoService) Div(args Args, result *float64) error {
@@ -13,6 +13,6 @@ func (DemoService) Div(args Args, result *float64) error {
     return errors.New("division by zero")
   }
 
-  *result = float64(args.A) / float64(args.B)
+  *result = args.A / args.B
   return nil
 }

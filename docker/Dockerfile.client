@@ -4,11 +4,11 @@ WORKDIR /app
 COPY . .
 RUN go get ./...
 
-WORKDIR /app/server
+WORKDIR /app/client
 RUN go build .
 
 
 FROM golang:alpine
-COPY --from=builder /app/server/server /bin
+COPY --from=builder /app/client/client /bin
 
-ENTRYPOINT ["server"]
+CMD ["client"]
